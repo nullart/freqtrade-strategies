@@ -33,7 +33,7 @@ class CustomStrategy001(IStrategy):
 
     # Optimal stoploss designed for the strategy
     # This attribute will be overridden if the config file contains "stoploss"
-    # stoploss = -0.3
+    #stoploss = -0.3
 
     # Optimal ticker interval for the strategy
     ticker_interval = 5
@@ -51,4 +51,39 @@ class CustomStrategy001(IStrategy):
         dataframe['ema50'] = ta.EMA(dataframe, timeperiod=50)
         dataframe['ema100'] = ta.EMA(dataframe, timeperiod=100)
 
-        heikinashi = qtpylib.heikinashi(dataframe
+        heikinashi = qtpylib.heikinashi(dataframe)
+        dataframe['ha_open'] = heikinashi['open']
+        dataframe['ha_close'] = heikinashi['close']
+
+        return dataframe
+
+    def populate_buy_trend(self, dataframe: DataFrame) -> DataFrame:
+        """
+        Based on TA indicators, populates the buy signal for the given dataframe
+        :param dataframe: DataFrame
+        :return: DataFrame with buy column
+        """
+        dataframe.loc[
+            (
+                qtpylib.crossed_above(dataframe['ema20'], dataframe['ema50']) &
+                (dataframe['ha_close'] > dataframe['ema20']) &
+                (dataframe['ha_open'] < dataframe['ha_close'])  # green bar
+            ),
+            'buy'] = 1
+
+        return dataframe
+
+    def populate_sell_trend(self, dataframe: DataFrame) -> DataFrame:
+        """
+        Based on TA indicators, populates the sell signal for the given dataframe
+        :param dataframe: DataFrame
+        :return: DataFrame with buy column
+        """
+        dataframe.loc[
+            (
+                qtpylib.crossed_above(dataframe['ema50'], dataframe['ema100']) &
+                (dataframe['ha_close'] < dataframe['ema20']) &
+                (dataframe['ha_open'] > dataframe['ha_close'])  # red bar
+            ),
+            'sell'] = 1
+        return dataframe
