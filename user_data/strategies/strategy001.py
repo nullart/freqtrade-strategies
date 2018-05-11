@@ -33,7 +33,7 @@ class CustomStrategy(IStrategy):
 
     # Optimal stoploss designed for the strategy
     # This attribute will be overridden if the config file contains "stoploss"
-    stoploss = -0.3
+    # stoploss = -0.3
 
     # Optimal ticker interval for the strategy
     ticker_interval = 5
