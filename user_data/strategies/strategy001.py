@@ -12,10 +12,10 @@ import freqtrade.vendor.qtpylib.indicators as qtpylib
 
 
 # Update this variable if you change the class name
-class_name = 'CustomStrategy'
+class_name = 'CustomStrategy001'
 
 
-class CustomStrategy(IStrategy):
+class CustomStrategy001(IStrategy):
     """
     Prod strategy 001
     author@: Gerald Lonlas
@@ -51,39 +51,4 @@ class CustomStrategy(IStrategy):
         dataframe['ema50'] = ta.EMA(dataframe, timeperiod=50)
         dataframe['ema100'] = ta.EMA(dataframe, timeperiod=100)
 
-        heikinashi = qtpylib.heikinashi(dataframe)
-        dataframe['ha_open'] = heikinashi['open']
-        dataframe['ha_close'] = heikinashi['close']
-
-        return dataframe
-
-    def populate_buy_trend(self, dataframe: DataFrame) -> DataFrame:
-        """
-        Based on TA indicators, populates the buy signal for the given dataframe
-        :param dataframe: DataFrame
-        :return: DataFrame with buy column
-        """
-        dataframe.loc[
-            (
-                qtpylib.crossed_above(dataframe['ema20'], dataframe['ema50']) &
-                (dataframe['ha_close'] > dataframe['ema20']) &
-                (dataframe['ha_open'] < dataframe['ha_close'])  # green bar
-            ),
-            'buy'] = 1
-
-        return dataframe
-
-    def populate_sell_trend(self, dataframe: DataFrame) -> DataFrame:
-        """
-        Based on TA indicators, populates the sell signal for the given dataframe
-        :param dataframe: DataFrame
-        :return: DataFrame with buy column
-        """
-        dataframe.loc[
-            (
-                qtpylib.crossed_above(dataframe['ema50'], dataframe['ema100']) &
-                (dataframe['ha_close'] < dataframe['ema20']) &
-                (dataframe['ha_open'] > dataframe['ha_close'])  # red bar
-            ),
-            'sell'] = 1
-        return dataframe
+        heikinashi = qtpylib.heikinashi(dataframe
