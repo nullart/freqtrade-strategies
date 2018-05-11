@@ -13,10 +13,10 @@ import numpy # noqa
 
 
 # Update this variable if you change the class name
-class_name = 'CustomStrategy'
+class_name = 'CustomStrategy003'
 
 
-class CustomStrategy(IStrategy):
+class CustomStrategy003(IStrategy):
     """
     Prod strategy 003
     author@: Gerald Lonlas
@@ -34,7 +34,7 @@ class CustomStrategy(IStrategy):
 
     # Optimal stoploss designed for the strategy
     # This attribute will be overridden if the config file contains "stoploss"
-    stoploss = -0.3
+    # stoploss = -0.3
 
     # Optimal ticker interval for the strategy
     ticker_interval = 5
